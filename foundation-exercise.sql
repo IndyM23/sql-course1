@@ -61,6 +61,21 @@ WHERE Hospital IN ('Oxleas', 'PRUH')
 	AND Ward LIKE '%Surgery'
 ORDER BY AdmittedDate DESC, PatientID DESC;
 
+SELECT *
+FROM DimHospitalBad
+
+SELECT
+	ps.PatientId
+	, ps.AdmittedDate
+	, h.HospitalType
+	, h.Reach
+	, h.Hospital
+	, h.Hospital
+From
+	PatientStay ps LEFT JOIN DimHospitalBad h ON ps.Hospital = h.Hospital
+
+
+
 
 /*
 5. How many patients has each hospital admitted? 
