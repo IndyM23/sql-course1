@@ -14,12 +14,25 @@ SELECT
 	, DATEDIFF(DAY, ps.AdmittedDate, ps.DischargeDate) AS LengthOfStay
 	, ps.hospital
 	, ps.Ward
+	, ps.Tariff
 From
 	PatientStay ps
 WHERE ps.Hospital IN('Kingston', 'PRUH')
 	AND ps.ward LIKE '%Surgery'
 	AND ps.AdmittedDate BETWEEN '2024-02-27'AND '2024-03-01'
 ORDER BY ps.AdmittedDate ASC, ps.DischargeDate ASC
+
+SELECT Top 5
+	ps.Hospital
+	, ps.ward
+	, COUNT(*) AS PatientCount
+	, SUM(ps.Tariff) As TotalTariff
+	, AVG (ps.Tariff) AS AverageTariff
+
+FROM
+	PatientStay ps
+GROUP BY ps.Hospital, ps.ward
+ORDER BY Totaltariff DESC
 
 
 /*
@@ -35,7 +48,18 @@ d) only the surgical wards (i.e. wards ending with the word Surgery)
 4. Add a new column LengthOfStay which calculates the number of days that the patient stayed in hospital, inclusive of both admitted and discharge date.
 */
 
--- Write the SQL statement here
+SELECT
+	PatientID,
+	AdmittedDate,
+	DischargeDate,
+	Hospital,
+	Ward,
+	DATEDIFF(DAY, AdmittedDate, DischargeDate) + 1 AS LengthOfStay
+FROM PatientStay
+WHERE Hospital IN ('Oxleas', 'PRUH')
+	AND AdmittedDate BETWEEN '2024-02-01' AND '2024-02-29'
+	AND Ward LIKE '%Surgery'
+ORDER BY AdmittedDate DESC, PatientID DESC;
 
 
 /*
@@ -45,4 +69,13 @@ d) only the surgical wards (i.e. wards ending with the word Surgery)
 8. Order by the hospital with most admissions first
 */
 
--- Write the SQL statement here
+SELECT
+	Hospital,
+	COUNT(*) AS PatientCount,
+	SUM(Tariff) AS TotalTariff
+FROM PatientStay
+GROUP BY Hospital
+HAVING COUNT(*) > 10
+ORDER BY PatientCount DESC;
+
+
